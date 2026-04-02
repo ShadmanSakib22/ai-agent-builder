@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavAgents } from "@/components/nav-agents";
+import { NavMyModels } from "@/components/nav-my-models";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
 import {
@@ -17,14 +17,12 @@ import {
 } from "@/components/ui/sidebar";
 import {
   TerminalSquareIcon,
-  BotIcon,
   LifeBuoyIcon,
   SendIcon,
   TerminalIcon,
   Rocket,
 } from "lucide-react";
 
-// Todo: Move data fetching to a loader or useSWR for better performance and separation of concerns
 // Mock data for navigation and user
 const data = {
   user: {
@@ -86,23 +84,6 @@ const data = {
       icon: <SendIcon />,
     },
   ],
-  myAgents: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: <BotIcon />,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: <BotIcon />,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: <BotIcon />,
-    },
-  ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -127,7 +108,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavAgents myAgents={data.myAgents} />
+        <NavMyModels />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
