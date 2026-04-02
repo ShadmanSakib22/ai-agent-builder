@@ -23,11 +23,11 @@ export default function Dock({ items, className }: DockProps) {
   const [hovered, setHovered] = React.useState<number | null>(null);
 
   return (
-    <div className={cn("flex items-center justify-center w-full", className)}>
+    <div className={cn("flex justify-end", className)}>
       <div
         className={cn(
-          "flex items-end gap-1 p-1.5 rounded-md",
-          "border border-dashed bg-background backdrop-blur-2xl shadow-lg",
+          "flex items-end gap-2 p-1.5 rounded-md",
+          // "border border-dashed bg-background backdrop-blur-2xl shadow-lg",
         )}
         style={{
           transform: "perspective(600px) rotateX(10deg)", // arc layout illusion

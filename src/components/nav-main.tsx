@@ -18,17 +18,18 @@ import { ChevronRightIcon } from "lucide-react";
 
 export function NavMain({
   items,
+  pathname,
+  onNavigate,
 }: {
   items: {
     title: string;
     url: string;
     icon: React.ReactNode;
     isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
+    items?: { title: string; url: string }[];
   }[];
+  pathname?: string;
+  onNavigate?: (path: string) => void;
 }) {
   return (
     <SidebarGroup>
@@ -37,11 +38,14 @@ export function NavMain({
         {items.map((item) => (
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip={item.title}>
-                <a href={item.url}>
-                  {item.icon}
-                  <span>{item.title}</span>
-                </a>
+              <SidebarMenuButton
+                tooltip={item.title}
+                isActive={pathname === item.url}
+                onClick={() => onNavigate?.(item.url)}
+                className="cursor-pointer"
+              >
+                {item.icon}
+                <span>{item.title}</span>
               </SidebarMenuButton>
               {item.items?.length ? (
                 <>
@@ -53,12 +57,14 @@ export function NavMain({
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>
-                      {item.items?.map((subItem) => (
+                      {item.items.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </a>
+                          <SidebarMenuSubButton
+                            isActive={pathname === subItem.url}
+                            onClick={() => onNavigate?.(subItem.url)}
+                            className="cursor-pointer"
+                          >
+                            <span>{subItem.title}</span>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}

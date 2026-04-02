@@ -30,11 +30,7 @@ const DockRight = () => {
     },
   ];
 
-  return (
-    <div className="fixed z-1 bottom-2 right-2">
-      <Dock items={dockItems} />
-    </div>
-  );
+  return <Dock items={dockItems} />;
 };
 
 export default DockRight;
