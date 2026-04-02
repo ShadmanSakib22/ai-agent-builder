@@ -63,7 +63,7 @@ export function NavAgents({
               >
                 <DropdownMenuItem>
                   <FolderIcon className="text-muted-foreground" />
-                  <span>Load Agent</span>
+                  <span>Edit Agent</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <ShareIcon className="text-muted-foreground" />

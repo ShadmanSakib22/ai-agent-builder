@@ -6,7 +6,7 @@ import DockRight from "@/components/dock-right";
 
 // Importing page components for routing
 import Home from "@/pages/Home";
-// Import other pages as needed
+import Builder from "@/pages/Builder";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
             {/* Routes go here */}
             <Routes>
               <Route path="/" element={<Home />} />
-              {/* Page details go here */}
+              <Route path="/builder" element={<Builder />} />
             </Routes>
           </main>
         </SidebarInset>

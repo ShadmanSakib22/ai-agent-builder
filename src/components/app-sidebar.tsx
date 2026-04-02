@@ -35,25 +35,25 @@ const data = {
   navMain: [
     {
       title: "Builder",
-      url: "#",
+      url: "/builder",
       icon: <TerminalSquareIcon />,
       isActive: true,
       items: [
         {
-          title: "Base Profiles",
-          url: "#",
+          title: "1. Base Profiles",
+          url: "/builder/base-profiles",
         },
         {
-          title: "Skills Library",
-          url: "#",
+          title: "2. Skills Library",
+          url: "/builder/skills-library",
         },
         {
-          title: "Personalities",
-          url: "#",
+          title: "3. Personalities",
+          url: "/builder/personalities",
         },
         {
-          title: "AI Providers",
-          url: "#",
+          title: "4. AI Providers",
+          url: "/builder/ai-providers",
         },
       ],
     },
@@ -65,11 +65,11 @@ const data = {
       items: [
         {
           title: "Blueprint",
-          url: "#",
+          url: "/builder/blueprint",
         },
         {
           title: "Deployments",
-          url: "#",
+          url: "/builder/deployments",
         },
       ],
     },
