@@ -1,20 +1,29 @@
 // App.tsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "@/components/Navbar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import DockRight from "@/components/dock-right";
+
+// Importing page components for routing
 import Home from "@/pages/Home";
+// Import other pages as needed
 
 function App() {
   return (
     <BrowserRouter>
-      {/* Persistent Layout Elements */}
-      <Navbar />
-
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* Page details go here */}
-        </Routes>
-      </main>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <main className="flex flex-1 flex-col gap-4 p-4">
+            <DockRight />
+            {/* Routes go here */}
+            <Routes>
+              <Route path="/" element={<Home />} />
+              {/* Page details go here */}
+            </Routes>
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
     </BrowserRouter>
   );
 }
