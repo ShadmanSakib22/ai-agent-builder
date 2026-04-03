@@ -1,18 +1,10 @@
 import { useState, useRef } from "react";
 import { useAgentStore } from "@/stores/agentStore";
-import {
-  Search,
-  GripVertical,
-  X,
-  Plus,
-  Zap,
-  Brain,
-  User,
-  Cpu,
-  ChevronDown,
-  ChevronRight,
-} from "lucide-react";
+import { Search, Zap, Brain, User, Cpu, Plus, X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ProgressStepper } from "@/components/progress-stepper";
+import { DraggableItem } from "@/components/draggable-item";
+import { CategorySection } from "@/components/category-section";
 
 interface BuilderProps {
   section?: "profiles" | "skills" | "layers" | "providers";
@@ -197,15 +189,51 @@ export default function Builder({ section }: BuilderProps) {
     }
   };
 
+  // Define builder steps
+  const builderSteps = [
+    {
+      id: "profiles",
+      title: "Base Profiles",
+      url: "/builder/base-profiles",
+      isCompleted: () => !!selectedProfile,
+    },
+    {
+      id: "skills",
+      title: "Skills Library",
+      url: "/builder/skills-library",
+      isCompleted: () => selectedSkills.length > 0,
+    },
+    {
+      id: "layers",
+      title: "Personalities",
+      url: "/builder/personalities",
+      isCompleted: () => selectedLayers.length > 0,
+    },
+    {
+      id: "providers",
+      title: "AI Providers",
+      url: "/builder/ai-providers",
+      isCompleted: () => !!selectedProvider,
+    },
+    {
+      id: "blueprint",
+      title: "Blueprint",
+      url: "/builder/blueprint",
+      isCompleted: () =>
+        !!selectedProfile &&
+        selectedSkills.length > 0 &&
+        selectedLayers.length > 0 &&
+        !!selectedProvider,
+    },
+  ];
+
   return (
     <>
-      <div>
-        Todo: Progress Indicator (horizontal stepper with navigation to
-        sections, checkmarks for completed steps):
-      </div>
-      <div className="flex max-h-[70vh] gap-3 overflow-hidden">
+      <ProgressStepper steps={builderSteps} />
+
+      <div className="flex max-h-[calc(100vh-140px)] gap-3 overflow-hidden py-4">
         {/* ── LEFT PANEL ── */}
-        <div className="flex w-fit shrink-0 flex-col gap-3 overflow-hidden border-2 border-border p-2 rounded-xl rounded-tl-sm rounded-bl-none">
+        <div className="flex flex-1 flex-col gap-3 overflow-hidden rounded-xl rounded-bl-none rounded-tl-sm border-2 border-border p-2 md:flex-initial md:min-w-[320px] lg:min-w-95">
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <input
@@ -217,7 +245,7 @@ export default function Builder({ section }: BuilderProps) {
           </div>
 
           <ScrollArea className="flex-1 pr-3 pb-2">
-            <div className="space-y-4 pb-4 w-75">
+            <div className="space-y-4 pb-4 md:w-75">
               {/* Base Profiles */}
               {showProfiles && filteredProfiles.length > 0 && (
                 <section>
@@ -228,52 +256,23 @@ export default function Builder({ section }: BuilderProps) {
                     {filteredProfiles.map((profile) => {
                       const isSelected = selectedProfile === profile.id;
                       return (
-                        <div
+                        <DraggableItem
                           key={profile.id}
-                          draggable
-                          onDragStart={() => {
-                            dragItem.current = {
-                              id: profile.id,
-                              type: "profile",
-                            };
-                            setDraggingId(profile.id);
+                          id={profile.id}
+                          type="profile"
+                          title={profile.name}
+                          description={profile.description}
+                          isSelected={isSelected}
+                          onToggle={() =>
+                            setSelectedProfile(isSelected ? "" : profile.id)
+                          }
+                          onDragStart={(id) => {
+                            dragItem.current = { id, type: "profile" };
+                            setDraggingId(id);
                           }}
                           onDragEnd={() => setDraggingId(null)}
-                          className={[
-                            "group flex cursor-grab items-start gap-2 rounded-lg border p-2.5 text-sm transition-all active:cursor-grabbing active:opacity-60",
-                            isSelected
-                              ? "border-primary/40 bg-primary/5"
-                              : "border-border/60 bg-card hover:border-border hover:shadow-sm",
-                            draggingId === profile.id ? "opacity-50" : "",
-                          ].join(" ")}
-                        >
-                          <GripVertical className="mt-0.5 size-3.5 shrink-0 text-muted-foreground/50 group-hover:text-muted-foreground" />
-                          <div className="min-w-0 flex-1">
-                            <p className="font-medium leading-tight">
-                              {profile.name}
-                            </p>
-                            <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
-                              {profile.description}
-                            </p>
-                          </div>
-                          <button
-                            onClick={() =>
-                              setSelectedProfile(isSelected ? "" : profile.id)
-                            }
-                            className={[
-                              "shrink-0 rounded-md border p-1 transition-colors",
-                              isSelected
-                                ? "border-primary/40 bg-primary/10 text-primary"
-                                : "border-transparent bg-muted text-muted-foreground hover:border-border hover:text-foreground",
-                            ].join(" ")}
-                          >
-                            {isSelected ? (
-                              <X className="size-3" />
-                            ) : (
-                              <Plus className="size-3" />
-                            )}
-                          </button>
-                        </div>
+                          draggingId={draggingId}
+                        />
                       );
                     })}
                   </div>
@@ -288,82 +287,36 @@ export default function Builder({ section }: BuilderProps) {
                   </h3>
                   <div className="space-y-2">
                     {Object.entries(groupedSkills).map(([cat, skills]) => (
-                      <div key={cat}>
-                        <button
-                          onClick={() => toggleCategory(cat)}
-                          className="flex w-full items-center gap-1.5 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-                        >
-                          {isCategoryOpen(cat) ? (
-                            <ChevronDown className="size-3" />
-                          ) : (
-                            <ChevronRight className="size-3" />
-                          )}
-                          <span
-                            className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 ${CATEGORY_COLORS[cat] ?? ""}`}
-                          >
-                            {CATEGORY_ICONS[cat]}
-                            {cat}
-                          </span>
-                          <span className="ml-auto text-muted-foreground/60">
-                            {skills.length}
-                          </span>
-                        </button>
-                        {isCategoryOpen(cat) && (
-                          <div className="mt-1 space-y-1 pl-3">
-                            {skills.map((skill) => {
-                              const isSelected = selectedSkills.includes(
-                                skill.id,
-                              );
-                              return (
-                                <div
-                                  key={skill.id}
-                                  draggable
-                                  onDragStart={() => {
-                                    dragItem.current = {
-                                      id: skill.id,
-                                      type: "skill",
-                                    };
-                                    setDraggingId(skill.id);
-                                  }}
-                                  onDragEnd={() => setDraggingId(null)}
-                                  className={[
-                                    "group flex cursor-grab items-start gap-2 rounded-lg border p-2.5 text-sm transition-all active:cursor-grabbing active:opacity-60",
-                                    isSelected
-                                      ? "border-primary/40 bg-primary/5"
-                                      : "border-border/60 bg-card hover:border-border hover:shadow-sm",
-                                    draggingId === skill.id ? "opacity-50" : "",
-                                  ].join(" ")}
-                                >
-                                  <GripVertical className="mt-0.5 size-3.5 shrink-0 text-muted-foreground/50 group-hover:text-muted-foreground" />
-                                  <div className="min-w-0 flex-1">
-                                    <p className="font-medium leading-tight">
-                                      {skill.name}
-                                    </p>
-                                    <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
-                                      {skill.description}
-                                    </p>
-                                  </div>
-                                  <button
-                                    onClick={() => toggleSkill(skill.id)}
-                                    className={[
-                                      "shrink-0 rounded-md border p-1 transition-colors",
-                                      isSelected
-                                        ? "border-primary/40 bg-primary/10 text-primary"
-                                        : "border-transparent bg-muted text-muted-foreground hover:border-border hover:text-foreground",
-                                    ].join(" ")}
-                                  >
-                                    {isSelected ? (
-                                      <X className="size-3" />
-                                    ) : (
-                                      <Plus className="size-3" />
-                                    )}
-                                  </button>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
+                      <CategorySection
+                        key={cat}
+                        title={cat}
+                        icon={CATEGORY_ICONS[cat]}
+                        color={CATEGORY_COLORS[cat] ?? ""}
+                        count={skills.length}
+                        isOpen={isCategoryOpen(cat)}
+                        onToggle={() => toggleCategory(cat)}
+                      >
+                        {skills.map((skill) => {
+                          const isSelected = selectedSkills.includes(skill.id);
+                          return (
+                            <DraggableItem
+                              key={skill.id}
+                              id={skill.id}
+                              type="skill"
+                              title={skill.name}
+                              description={skill.description}
+                              isSelected={isSelected}
+                              onToggle={() => toggleSkill(skill.id)}
+                              onDragStart={(id) => {
+                                dragItem.current = { id, type: "skill" };
+                                setDraggingId(id);
+                              }}
+                              onDragEnd={() => setDraggingId(null)}
+                              draggingId={draggingId}
+                            />
+                          );
+                        })}
+                      </CategorySection>
                     ))}
                   </div>
                 </section>
@@ -377,82 +330,36 @@ export default function Builder({ section }: BuilderProps) {
                   </h3>
                   <div className="space-y-2">
                     {Object.entries(groupedLayers).map(([type, layers]) => (
-                      <div key={type}>
-                        <button
-                          onClick={() => toggleCategory(`layer_${type}`)}
-                          className="flex w-full items-center gap-1.5 py-0.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-                        >
-                          {isCategoryOpen(`layer_${type}`) ? (
-                            <ChevronDown className="size-3" />
-                          ) : (
-                            <ChevronRight className="size-3" />
-                          )}
-                          <span
-                            className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 ${CATEGORY_COLORS[type] ?? ""}`}
-                          >
-                            {CATEGORY_ICONS[type]}
-                            {type}
-                          </span>
-                          <span className="ml-auto text-muted-foreground/60">
-                            {layers.length}
-                          </span>
-                        </button>
-                        {isCategoryOpen(`layer_${type}`) && (
-                          <div className="mt-1 space-y-1 pl-3">
-                            {layers.map((layer) => {
-                              const isSelected = selectedLayers.includes(
-                                layer.id,
-                              );
-                              return (
-                                <div
-                                  key={layer.id}
-                                  draggable
-                                  onDragStart={() => {
-                                    dragItem.current = {
-                                      id: layer.id,
-                                      type: "layer",
-                                    };
-                                    setDraggingId(layer.id);
-                                  }}
-                                  onDragEnd={() => setDraggingId(null)}
-                                  className={[
-                                    "group flex cursor-grab items-start gap-2 rounded-lg border p-2.5 text-sm transition-all active:cursor-grabbing active:opacity-60",
-                                    isSelected
-                                      ? "border-primary/40 bg-primary/5"
-                                      : "border-border/60 bg-card hover:border-border hover:shadow-sm",
-                                    draggingId === layer.id ? "opacity-50" : "",
-                                  ].join(" ")}
-                                >
-                                  <GripVertical className="mt-0.5 size-3.5 shrink-0 text-muted-foreground/50 group-hover:text-muted-foreground" />
-                                  <div className="min-w-0 flex-1">
-                                    <p className="font-medium leading-tight">
-                                      {layer.name}
-                                    </p>
-                                    <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
-                                      {layer.description}
-                                    </p>
-                                  </div>
-                                  <button
-                                    onClick={() => toggleLayer(layer.id)}
-                                    className={[
-                                      "shrink-0 rounded-md border p-1 transition-colors",
-                                      isSelected
-                                        ? "border-primary/40 bg-primary/10 text-primary"
-                                        : "border-transparent bg-muted text-muted-foreground hover:border-border hover:text-foreground",
-                                    ].join(" ")}
-                                  >
-                                    {isSelected ? (
-                                      <X className="size-3" />
-                                    ) : (
-                                      <Plus className="size-3" />
-                                    )}
-                                  </button>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
+                      <CategorySection
+                        key={type}
+                        title={type}
+                        icon={CATEGORY_ICONS[type]}
+                        color={CATEGORY_COLORS[type] ?? ""}
+                        count={layers.length}
+                        isOpen={isCategoryOpen(`layer_${type}`)}
+                        onToggle={() => toggleCategory(`layer_${type}`)}
+                      >
+                        {layers.map((layer) => {
+                          const isSelected = selectedLayers.includes(layer.id);
+                          return (
+                            <DraggableItem
+                              key={layer.id}
+                              id={layer.id}
+                              type="layer"
+                              title={layer.name}
+                              description={layer.description}
+                              isSelected={isSelected}
+                              onToggle={() => toggleLayer(layer.id)}
+                              onDragStart={(id) => {
+                                dragItem.current = { id, type: "layer" };
+                                setDraggingId(id);
+                              }}
+                              onDragEnd={() => setDraggingId(null)}
+                              draggingId={draggingId}
+                            />
+                          );
+                        })}
+                      </CategorySection>
                     ))}
                   </div>
                 </section>
@@ -468,45 +375,22 @@ export default function Builder({ section }: BuilderProps) {
                     {filteredProviders.map((provider) => {
                       const isSelected = selectedProvider === provider;
                       return (
-                        <div
+                        <DraggableItem
                           key={provider}
-                          draggable
-                          onDragStart={() => {
-                            dragItem.current = {
-                              id: provider,
-                              type: "provider",
-                            };
-                            setDraggingId(provider);
+                          id={provider}
+                          type="provider"
+                          title={provider}
+                          isSelected={isSelected}
+                          onToggle={() =>
+                            setSelectedProvider(isSelected ? "" : provider)
+                          }
+                          onDragStart={(id) => {
+                            dragItem.current = { id, type: "provider" };
+                            setDraggingId(id);
                           }}
                           onDragEnd={() => setDraggingId(null)}
-                          className={[
-                            "group flex cursor-grab items-center gap-2 rounded-lg border p-2.5 text-sm transition-all active:cursor-grabbing",
-                            isSelected
-                              ? "border-primary/40 bg-primary/5"
-                              : "border-border/60 bg-card hover:border-border hover:shadow-sm",
-                            draggingId === provider ? "opacity-50" : "",
-                          ].join(" ")}
-                        >
-                          <GripVertical className="size-3.5 shrink-0 text-muted-foreground/50 group-hover:text-muted-foreground" />
-                          <span className="flex-1 font-medium">{provider}</span>
-                          <button
-                            onClick={() =>
-                              setSelectedProvider(isSelected ? "" : provider)
-                            }
-                            className={[
-                              "shrink-0 rounded-md border p-1 transition-colors",
-                              isSelected
-                                ? "border-primary/40 bg-primary/10 text-primary"
-                                : "border-transparent bg-muted text-muted-foreground hover:border-border hover:text-foreground",
-                            ].join(" ")}
-                          >
-                            {isSelected ? (
-                              <X className="size-3" />
-                            ) : (
-                              <Plus className="size-3" />
-                            )}
-                          </button>
-                        </div>
+                          draggingId={draggingId}
+                        />
                       );
                     })}
                   </div>
