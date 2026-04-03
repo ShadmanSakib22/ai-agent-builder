@@ -3,6 +3,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AgentProvider } from "@/context/AgentContext";
 import { BuilderNav } from "@/components/builder-nav";
+import { Header } from "@/components/header";
 
 import Home from "@/pages/Home";
 import Builder from "@/pages/Builder";
@@ -17,8 +18,9 @@ function App() {
         <SidebarProvider>
           <AppSidebar />
           <SidebarInset>
-            <BuilderNav />
+            <Header />
             <div className="flex flex-1 flex-col p-4">
+              <BuilderNav />
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/builder" element={<Builder />} />

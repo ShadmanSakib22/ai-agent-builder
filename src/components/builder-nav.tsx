@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { ChevronRight, Terminal } from "lucide-react";
-import DockRight from "@/components/dock-right";
 
 const STEPS = [
   { label: "Base Profiles", path: "/builder/base-profiles", step: 1 },
@@ -27,7 +26,7 @@ export function BuilderNav() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-background flex h-14 shrink-0 items-center gap-2 border-b border-border/50 px-4">
+    <div className="mb-4 lg:mb-6">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
         {isBuilder && (
@@ -53,10 +52,6 @@ export function BuilderNav() {
           <span className="font-medium text-foreground">{getPageTitle()}</span>
         )}
       </div>
-
-      <div className="ml-auto">
-        <DockRight />
-      </div>
-    </header>
+    </div>
   );
 }

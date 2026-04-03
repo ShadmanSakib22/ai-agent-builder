@@ -93,13 +93,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               onClick={() => navigate("/")}
               className="cursor-pointer"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <TerminalIcon className="size-4" />
-              </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">AI Agent</span>
-                <span className="truncate text-xs">Architect</span>
-              </div>
+              <Logo />
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -125,5 +119,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         />
       </SidebarFooter>
     </Sidebar>
+  );
+}
+
+export function Logo() {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+        <TerminalIcon className="size-4" />
+      </div>
+      <div className="grid flex-1 text-left leading-tight">
+        <span className="truncate font-medium">AI Agent</span>
+        <span className="truncate text-xs">Architect</span>
+      </div>
+    </div>
   );
 }
