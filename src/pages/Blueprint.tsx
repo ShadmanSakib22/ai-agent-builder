@@ -1,5 +1,6 @@
 import { useAgentStore } from "@/stores/agentStore";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import {
   Zap,
   Brain,
@@ -11,7 +12,19 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-const CATEGORY_COLORS: Record<string, string> = {
+type Category =
+  | "information"
+  | "action"
+  | "reasoning"
+  | "personality"
+  | "context"
+  | "formatting";
+
+interface CategoryStyles {
+  [key: string]: string;
+}
+
+const CATEGORY_COLORS: CategoryStyles = {
   information:
     "bg-blue-500/10 text-blue-600 border-blue-200 dark:border-blue-800 dark:text-blue-400",
   action:
@@ -26,7 +39,7 @@ const CATEGORY_COLORS: Record<string, string> = {
     "bg-yellow-500/10 text-yellow-600 border-yellow-200 dark:border-yellow-800 dark:text-yellow-400",
 };
 
-const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+const CATEGORY_ICONS: Record<Category, React.ReactNode> = {
   information: <Zap className="size-3.5" />,
   action: <Cpu className="size-3.5" />,
   reasoning: <Brain className="size-3.5" />,
@@ -34,6 +47,57 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   context: <Brain className="size-3.5" />,
   formatting: <Cpu className="size-3.5" />,
 };
+
+interface ConfigCardProps {
+  title: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}
+
+function ConfigCard({ title, icon, children }: ConfigCardProps) {
+  return (
+    <div className="rounded-lg border border-border/50 bg-muted/30 p-3.5">
+      <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        {icon}
+        {title}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+interface CategoryItemCardProps {
+  name: string;
+  description: string;
+  isSelected: boolean;
+}
+
+function CategoryItemCard({
+  name,
+  description,
+  isSelected,
+}: CategoryItemCardProps) {
+  return (
+    <div
+      className={[
+        "rounded-lg border p-3 text-sm transition-all",
+        isSelected
+          ? "border-primary/40 bg-primary/5"
+          : "border-border/40 bg-muted/20",
+      ].join(" ")}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <p className="font-medium">{name}</p>
+        {isSelected && (
+          <span className="shrink-0 rounded-full bg-primary/20 px-1.5 py-0.5 text-xs font-medium text-primary">
+            active
+          </span>
+        )}
+      </div>
+      <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+    </div>
+  );
+}
 
 export default function Blueprint() {
   const {
@@ -84,28 +148,25 @@ export default function Blueprint() {
   );
 
   return (
-    <div className="flex h-[calc(100vh-7.5rem)] flex-col gap-4 overflow-y-auto pb-6">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-1">
         <div>
           <h1 className="text-lg font-semibold">Blueprint</h1>
           <p className="text-sm text-muted-foreground">
-            Full overview of your agent's configuration and all available
+            Full overview of your agent&apos;s configuration and all available
             components.
           </p>
         </div>
-        <button
-          onClick={() => navigate("/builder/deployments")}
-          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
-        >
+        <Button onClick={() => navigate("/builder/deployments")}>
           <Rocket className="size-4" />
           Deploy Agent
           <ArrowRight className="size-3.5" />
-        </button>
+        </Button>
       </div>
 
       {/* Current config summary */}
-      <div className="rounded-xl border border-border/60 bg-card">
+      <div className="rounded-xl border border-border/60 bg-card pb-4">
         <div className="border-b border-border/40 px-5 py-3.5">
           <h2 className="text-sm font-semibold">Current Configuration</h2>
         </div>
@@ -115,21 +176,18 @@ export default function Blueprint() {
             <p className="text-sm text-muted-foreground">
               No traits selected yet.
             </p>
-            <button
+            <Button
+              variant="link"
               onClick={() => navigate("/builder/base-profiles")}
-              className="mt-1 text-xs text-primary hover:underline"
+              className="mt-1 h-auto p-0 text-xs"
             >
               Start building →
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="grid gap-4 p-5 sm:grid-cols-2 lg:grid-cols-4">
             {/* Profile */}
-            <div className="rounded-lg border border-border/50 bg-muted/30 p-3.5">
-              <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                <Bot className="size-3.5" />
-                Profile
-              </div>
+            <ConfigCard title="Profile" icon={<Bot className="size-3.5" />}>
               {profile ? (
                 <div>
                   <p className="font-medium">{profile.name}</p>
@@ -140,14 +198,13 @@ export default function Blueprint() {
               ) : (
                 <p className="text-sm text-muted-foreground/60">None</p>
               )}
-            </div>
+            </ConfigCard>
 
             {/* Skills */}
-            <div className="rounded-lg border border-border/50 bg-muted/30 p-3.5">
-              <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                <Zap className="size-3.5" />
-                Skills ({skills.length})
-              </div>
+            <ConfigCard
+              title={`Skills (${skills.length})`}
+              icon={<Zap className="size-3.5" />}
+            >
               {skills.length > 0 ? (
                 <div className="flex flex-wrap gap-1">
                   {skills.map((s) => (
@@ -162,14 +219,13 @@ export default function Blueprint() {
               ) : (
                 <p className="text-sm text-muted-foreground/60">None</p>
               )}
-            </div>
+            </ConfigCard>
 
             {/* Layers */}
-            <div className="rounded-lg border border-border/50 bg-muted/30 p-3.5">
-              <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                <Layers className="size-3.5" />
-                Layers ({layers.length})
-              </div>
+            <ConfigCard
+              title={`Layers (${layers.length})`}
+              icon={<Layers className="size-3.5" />}
+            >
               {layers.length > 0 ? (
                 <div className="flex flex-wrap gap-1">
                   {layers.map((l) => (
@@ -184,14 +240,10 @@ export default function Blueprint() {
               ) : (
                 <p className="text-sm text-muted-foreground/60">None</p>
               )}
-            </div>
+            </ConfigCard>
 
             {/* Provider */}
-            <div className="rounded-lg border border-border/50 bg-muted/30 p-3.5">
-              <div className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                <Cpu className="size-3.5" />
-                Provider
-              </div>
+            <ConfigCard title="Provider" icon={<Cpu className="size-3.5" />}>
               {selectedProvider ? (
                 <span className="inline-flex items-center rounded border border-indigo-200 bg-indigo-500/10 px-2 py-0.5 text-sm font-medium text-indigo-700 dark:border-indigo-800 dark:text-indigo-400">
                   {selectedProvider}
@@ -199,24 +251,24 @@ export default function Blueprint() {
               ) : (
                 <p className="text-sm text-muted-foreground/60">None</p>
               )}
-            </div>
+            </ConfigCard>
           </div>
         )}
       </div>
 
       {/* All skills reference */}
-      <div className="rounded-xl border border-border/60 bg-card">
+      <div className="rounded-xl border border-border/60 bg-card pb-4">
         <div className="border-b border-border/40 px-5 py-3.5">
           <h2 className="text-sm font-semibold">All Available Skills</h2>
         </div>
-        <div className="divide-y divide-border/30">
+        <div className="divide-y divide-border/30 px-5">
           {Object.entries(allSkillsByCategory).map(([cat, catSkills]) => (
-            <div key={cat} className="px-5 py-4">
+            <div key={cat} className="py-4 first:pt-4 last:pb-0">
               <div className="mb-3 flex items-center gap-2">
                 <span
                   className={`inline-flex items-center gap-1 rounded border px-2 py-0.5 text-xs font-medium ${CATEGORY_COLORS[cat] ?? ""}`}
                 >
-                  {CATEGORY_ICONS[cat]}
+                  {CATEGORY_ICONS[cat as Category] || null}
                   {cat}
                 </span>
               </div>
@@ -224,27 +276,12 @@ export default function Blueprint() {
                 {catSkills.map((skill) => {
                   const isSelected = selectedSkills.includes(skill.id);
                   return (
-                    <div
+                    <CategoryItemCard
                       key={skill.id}
-                      className={[
-                        "rounded-lg border p-3 text-sm transition-all",
-                        isSelected
-                          ? "border-primary/40 bg-primary/5"
-                          : "border-border/40 bg-muted/20",
-                      ].join(" ")}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="font-medium">{skill.name}</p>
-                        {isSelected && (
-                          <span className="shrink-0 rounded-full bg-primary/20 px-1.5 py-0.5 text-xs font-medium text-primary">
-                            active
-                          </span>
-                        )}
-                      </div>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {skill.description}
-                      </p>
-                    </div>
+                      name={skill.name}
+                      description={skill.description}
+                      isSelected={isSelected}
+                    />
                   );
                 })}
               </div>
@@ -254,18 +291,18 @@ export default function Blueprint() {
       </div>
 
       {/* All layers reference */}
-      <div className="rounded-xl border border-border/60 bg-card">
+      <div className="rounded-xl border border-border/60 bg-card pb-4">
         <div className="border-b border-border/40 px-5 py-3.5">
           <h2 className="text-sm font-semibold">All Available Layers</h2>
         </div>
-        <div className="divide-y divide-border/30">
+        <div className="divide-y divide-border/30 px-5">
           {Object.entries(allLayersByType).map(([type, typeLayers]) => (
-            <div key={type} className="px-5 py-4">
+            <div key={type} className="py-4 first:pt-4 last:pb-0">
               <div className="mb-3 flex items-center gap-2">
                 <span
                   className={`inline-flex items-center gap-1 rounded border px-2 py-0.5 text-xs font-medium ${CATEGORY_COLORS[type] ?? ""}`}
                 >
-                  {CATEGORY_ICONS[type]}
+                  {CATEGORY_ICONS[type as Category] || null}
                   {type}
                 </span>
               </div>
@@ -273,27 +310,12 @@ export default function Blueprint() {
                 {typeLayers.map((layer) => {
                   const isSelected = selectedLayers.includes(layer.id);
                   return (
-                    <div
+                    <CategoryItemCard
                       key={layer.id}
-                      className={[
-                        "rounded-lg border p-3 text-sm transition-all",
-                        isSelected
-                          ? "border-primary/40 bg-primary/5"
-                          : "border-border/40 bg-muted/20",
-                      ].join(" ")}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="font-medium">{layer.name}</p>
-                        {isSelected && (
-                          <span className="shrink-0 rounded-full bg-primary/20 px-1.5 py-0.5 text-xs font-medium text-primary">
-                            active
-                          </span>
-                        )}
-                      </div>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {layer.description}
-                      </p>
-                    </div>
+                      name={layer.name}
+                      description={layer.description}
+                      isSelected={isSelected}
+                    />
                   );
                 })}
               </div>

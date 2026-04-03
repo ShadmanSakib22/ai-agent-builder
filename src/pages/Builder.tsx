@@ -233,7 +233,7 @@ export default function Builder({ section }: BuilderProps) {
 
       <div className="flex max-h-[calc(100vh-140px)] gap-3 overflow-hidden py-4">
         {/* ── LEFT PANEL ── */}
-        <div className="flex flex-1 flex-col gap-3 overflow-hidden rounded-xl rounded-bl-none rounded-tl-sm border-2 border-border p-2 md:flex-initial md:min-w-[320px] lg:min-w-95">
+        <div className="flex flex-1 flex-col gap-3 overflow-hidden rounded-xl rounded-bl-none rounded-tl-sm border-2 border-border p-2 md:flex-initial md:min-w-[320px]">
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <input

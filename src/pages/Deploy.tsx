@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useAgentStore } from "@/stores/agentStore";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Rocket,
   CheckCircle2,
@@ -68,30 +70,26 @@ export default function Deploy() {
           </p>
         </div>
         <div className="flex gap-3">
-          <button
-            onClick={() => navigate("/models")}
-            className="rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium transition-all hover:bg-muted"
-          >
+          <Button variant="outline" onClick={() => navigate("/models")}>
             View All Models
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => {
               resetAgent();
-              setStatus("idle");
+              navigate("/builder/base-profiles");
             }}
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
           >
             Build Another
-          </button>
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-7.5rem)] max-w-2xl flex-col gap-5 overflow-y-auto pb-6">
+    <div className="mx-auto flex h-[calc(100vh-7.5rem)] max-w-2xl flex-col gap-5 pb-6">
       {/* Header */}
-      <div>
+      <div className="px-1">
         <h1 className="text-lg font-semibold">Deploy Agent</h1>
         <p className="text-sm text-muted-foreground">
           Review your configuration and give your agent a name to deploy.
@@ -99,7 +97,7 @@ export default function Deploy() {
       </div>
 
       {/* Config summary */}
-      <div className="rounded-xl border border-border/60 bg-card">
+      <div className="rounded-xl border border-border/60 bg-card px-1">
         <div className="border-b border-border/40 px-5 py-3.5">
           <h2 className="text-sm font-semibold">Configuration Summary</h2>
         </div>
@@ -143,16 +141,14 @@ export default function Deploy() {
         >
           Agent Name
         </label>
-        <input
+        <Input
           id="agent-name"
-          type="text"
           value={agentName}
           onChange={(e) => {
             setAgentName(e.target.value);
             if (status === "error") setStatus("idle");
           }}
           placeholder="e.g. Research Companion, Sales Bot, Code Reviewer…"
-          className="h-10 w-full rounded-lg border border-border bg-muted/40 px-3 text-sm outline-none placeholder:text-muted-foreground/60 focus:border-primary focus:ring-2 focus:ring-primary/20"
           onKeyDown={(e) => e.key === "Enter" && handleDeploy()}
         />
         {status === "error" && errorMsg && (
@@ -164,10 +160,11 @@ export default function Deploy() {
       </div>
 
       {/* Deploy button */}
-      <button
+      <Button
         onClick={handleDeploy}
         disabled={status === "deploying"}
-        className="flex h-11 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-semibold text-primary-foreground transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+        size="lg"
+        className="w-full"
       >
         {status === "deploying" ? (
           <>
@@ -180,7 +177,7 @@ export default function Deploy() {
             Deploy Agent
           </>
         )}
-      </button>
+      </Button>
     </div>
   );
 }
