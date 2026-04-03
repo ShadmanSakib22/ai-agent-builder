@@ -11,12 +11,13 @@ import {
 } from "lucide-react";
 
 export default function Models() {
-  const { savedAgents, deleteAgent, loadAgent, data, resetAgent } = useAgentStore();
+  const { savedAgents, deleteAgent, loadAgent, data, resetAgent } =
+    useAgentStore();
   const navigate = useNavigate();
 
   if (savedAgents.length === 0) {
     return (
-      <div className="flex h-[calc(100vh-7.5rem)] flex-col items-center justify-center gap-4 text-center">
+      <div className="flex flex-col items-center justify-center gap-4 text-center">
         <div className="flex size-16 items-center justify-center rounded-full border-2 border-dashed border-border bg-muted">
           <Bot className="size-7 text-muted-foreground/50" />
         </div>
@@ -41,7 +42,7 @@ export default function Models() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-7.5rem)] flex-col gap-4 overflow-y-auto pb-6">
+    <div className="flex flex-col gap-4 pb-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

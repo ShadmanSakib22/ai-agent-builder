@@ -44,6 +44,21 @@ export default function Deploy() {
       setStatus("error");
       return;
     }
+
+    // Check for duplicate agent names (case-insensitive)
+    const { savedAgents } = useAgentStore.getState();
+    const isDuplicate = savedAgents.some(
+      (agent) => agent.name.toLowerCase() === agentName.trim().toLowerCase(),
+    );
+
+    if (isDuplicate) {
+      setErrorMsg(
+        "An agent with this name already exists. Please choose a different name.",
+      );
+      setStatus("error");
+      return;
+    }
+
     setStatus("deploying");
     setErrorMsg("");
     // Simulate async deploy
@@ -59,7 +74,7 @@ export default function Deploy() {
 
   if (status === "success") {
     return (
-      <div className="flex h-[calc(100vh-7.5rem)] flex-col items-center justify-center gap-6 text-center">
+      <div className="flex flex-col items-center justify-center gap-6 text-center">
         <div className="flex size-20 items-center justify-center rounded-full bg-primary/10 ring-4 ring-primary/20">
           <CheckCircle2 className="size-10 text-primary" />
         </div>
@@ -87,7 +102,7 @@ export default function Deploy() {
   }
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-7.5rem)] max-w-2xl flex-col gap-5 pb-6">
+    <div className="mx-auto flex max-w-2xl flex-col gap-5 pb-6">
       {/* Header */}
       <div className="px-1">
         <h1 className="text-lg font-semibold">Deploy Agent</h1>
