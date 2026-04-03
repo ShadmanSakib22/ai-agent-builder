@@ -80,8 +80,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   ];
 
   const navSecondary = [
-    { title: "Support", url: "#", icon: <LifeBuoyIcon /> },
-    { title: "Feedback", url: "#", icon: <SendIcon /> },
+    {
+      title: "Support",
+      url: "mailto:shadman.sakib.office11@gmail.com",
+      icon: <LifeBuoyIcon />,
+    },
+    {
+      title: "Feedback",
+      url: "mailto:shadman.sakib.office11@gmail.com",
+      icon: <SendIcon />,
+    },
   ];
 
   const recentAgents = [...savedAgents]

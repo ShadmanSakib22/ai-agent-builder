@@ -48,7 +48,13 @@ export function Header() {
     {
       icon: User,
       label: "Profile",
-      onClick: () => alert("Profile clicked"),
+      onClick: () => {
+        window.open(
+          "https://shadman-portfolio-2024.vercel.app",
+          "_blank",
+          "noopener,noreferrer",
+        );
+      },
     },
     {
       icon: SunMoon,

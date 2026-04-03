@@ -150,7 +150,7 @@ export default function Blueprint() {
   return (
     <div className="space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between px-1">
+      <div className="flex flex-wrap items-center justify-between px-1 gap-4">
         <div>
           <h1 className="text-lg font-semibold">Blueprint</h1>
           <p className="text-sm text-muted-foreground">
