@@ -1,4 +1,4 @@
-import { useAgent } from "@/context/AgentContext";
+import { useAgentStore } from "@/stores/agentStore";
 import { useNavigate } from "react-router-dom";
 import {
   Zap,
@@ -43,7 +43,7 @@ export default function Blueprint() {
     selectedSkills,
     selectedLayers,
     selectedProvider,
-  } = useAgent();
+  } = useAgentStore();
   const navigate = useNavigate();
 
   if (loading) {

@@ -1,27 +1,55 @@
+import { useNavigate } from "react-router-dom";
+import {
+  User,
+  PanelLeft,
+  LayersPlus,
+  SunMoon,
+  Plus,
+  type LucideIcon,
+} from "lucide-react";
+
 import Dock from "@/components/ui/dock";
-import { User, PanelLeft, LayersPlus, SunMoon, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/app-sidebar";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useTheme } from "@/components/ui/theme-provider";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/app-sidebar";
+import { useAgentStore } from "@/stores/agentStore";
 
-const NavItems = () => {
-  const { toggleSidebar } = useSidebar();
-  const { theme, setTheme } = useTheme();
+interface NavItem {
+  icon: LucideIcon;
+  label: string;
+  onClick: () => void;
+}
+
+export function Header() {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { open, toggleSidebar } = useSidebar();
+  const { resetAgent } = useAgentStore();
+  const { theme, setTheme } = useTheme();
+
+  const handleNewAgent = () => {
+    resetAgent();
+    navigate("/builder/base-profiles");
+  };
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  const navItems = [
+  // React 19 Compiler - auto Memorize, Update: 03-03-2026
+  const allNavItems: NavItem[] = [
     {
       icon: LayersPlus,
       label: "New Agent",
-      onClick: () => alert("New Agent clicked"),
+      onClick: handleNewAgent,
     },
-    { icon: User, label: "Profile", onClick: () => alert("Profile clicked") },
+    {
+      icon: User,
+      label: "Profile",
+      onClick: () => alert("Profile clicked"),
+    },
     {
       icon: SunMoon,
       label: "Toggle Theme",
@@ -30,31 +58,29 @@ const NavItems = () => {
     {
       icon: PanelLeft,
       label: "Toggle Sidebar",
-      onClick: () => toggleSidebar(),
+      onClick: toggleSidebar,
     },
   ];
 
-  if (!isMobile) {
-    const navItemsLg = navItems.filter((item) => item.label !== "New Agent");
-    return <Dock items={navItemsLg} />;
-  }
-
-  return <Dock items={navItems} />;
-};
-
-export function Header() {
-  const { open } = useSidebar();
+  const filteredNavItems = isMobile
+    ? allNavItems
+    : allNavItems.filter((item) => item.label !== "New Agent");
 
   return (
-    <header className="sticky top-0 z-40 bg-background flex h-14 shrink-0 items-center justify-between gap-6 border-b border-border/50 px-4">
-      {!open && <Logo />}
+    <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between gap-6 border-b border-border/50 bg-background px-4">
+      <div className="flex items-center gap-4">
+        {!open && <Logo />}
 
-      <Button className="hidden lg:inline-flex">
-        New Agent <Plus />
-      </Button>
+        <Button
+          className="hidden lg:inline-flex items-center gap-2"
+          onClick={handleNewAgent}
+        >
+          New Agent <Plus className="size-4" />
+        </Button>
+      </div>
 
       <div className="ml-auto">
-        <NavItems />
+        <Dock items={filteredNavItems} />
       </div>
     </header>
   );

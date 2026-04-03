@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAgent } from "@/context/AgentContext";
+import { useAgentStore } from "@/stores/agentStore";
 import { useNavigate } from "react-router-dom";
 import {
   Rocket,
@@ -21,7 +21,8 @@ export default function Deploy() {
     selectedLayers,
     selectedProvider,
     saveAgent,
-  } = useAgent();
+    resetAgent,
+  } = useAgentStore();
 
   const navigate = useNavigate();
   const [status, setStatus] = useState<
@@ -75,8 +76,8 @@ export default function Deploy() {
           </button>
           <button
             onClick={() => {
+              resetAgent();
               setStatus("idle");
-              setAgentName("");
             }}
             className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
           >

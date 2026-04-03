@@ -1,4 +1,4 @@
-import { useAgent } from "@/context/AgentContext";
+import { useAgentStore } from "@/stores/agentStore";
 import { useNavigate } from "react-router-dom";
 import {
   Bot,
@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 export default function Models() {
-  const { savedAgents, deleteAgent, loadAgent, data } = useAgent();
+  const { savedAgents, deleteAgent, loadAgent, data, resetAgent } = useAgentStore();
   const navigate = useNavigate();
 
   if (savedAgents.length === 0) {
@@ -27,7 +27,10 @@ export default function Models() {
           </p>
         </div>
         <button
-          onClick={() => navigate("/builder/base-profiles")}
+          onClick={() => {
+            resetAgent();
+            navigate("/builder/base-profiles");
+          }}
           className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
         >
           <Plus className="size-4" />
@@ -49,7 +52,10 @@ export default function Models() {
           </p>
         </div>
         <button
-          onClick={() => navigate("/builder/base-profiles")}
+          onClick={() => {
+            resetAgent();
+            navigate("/builder/base-profiles");
+          }}
           className="flex items-center gap-2 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
         >
           <Plus className="size-4" />

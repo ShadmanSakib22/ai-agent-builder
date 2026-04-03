@@ -24,11 +24,18 @@ import {
   TerminalIcon,
   Rocket,
 } from "lucide-react";
-import { useAgent } from "@/context/AgentContext";
+import { useAgentStore } from "@/stores/agentStore";
 import type { SavedAgent } from "@/types/agent_types";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { savedAgents, loadAgent } = useAgent();
+  const {
+    savedAgents,
+    loadAgent,
+    selectedProfile,
+    selectedSkills,
+    selectedLayers,
+    selectedProvider,
+  } = useAgentStore();
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
@@ -36,23 +43,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navMain = [
     {
       title: "Builder",
-      url: "/builder",
+      url: "/builder/base-profiles",
       icon: <TerminalSquareIcon />,
-      isActive: pathname.startsWith("/builder"),
       items: [
-        { title: "1. Base Profiles", url: "/builder/base-profiles" },
-        { title: "2. Skills Library", url: "/builder/skills-library" },
-        { title: "3. Personalities", url: "/builder/personalities" },
-        { title: "4. AI Providers", url: "/builder/ai-providers" },
+        {
+          title: "1. Base Profiles",
+          url: "/builder/base-profiles",
+          hasCheckmark: !!selectedProfile,
+        },
+        {
+          title: "2. Skills Library",
+          url: "/builder/skills-library",
+          hasCheckmark: selectedSkills.length > 0,
+        },
+        {
+          title: "3. Personalities",
+          url: "/builder/personalities",
+          hasCheckmark: selectedLayers.length > 0,
+        },
+        {
+          title: "4. AI Providers",
+          url: "/builder/ai-providers",
+          hasCheckmark: !!selectedProvider,
+        },
       ],
     },
     {
-      title: "Ship",
+      title: "Confirm & Deploy",
       url: "/builder/blueprint",
       icon: <Rocket />,
-      isActive:
-        pathname === "/builder/blueprint" ||
-        pathname === "/builder/deployments",
       items: [
         { title: "5. Blueprint", url: "/builder/blueprint" },
         { title: "6. Deployments", url: "/builder/deployments" },
