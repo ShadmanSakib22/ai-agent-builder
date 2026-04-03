@@ -25,7 +25,7 @@ function App() {
         <AppSidebar />
         <SidebarInset>
           <Header />
-          <div className="flex flex-1 flex-col p-4">
+          <main className="flex flex-1 flex-col p-4">
             <BuilderNav />
             <Routes>
               <Route path="/" element={<Home />} />
@@ -50,7 +50,11 @@ function App() {
               <Route path="/builder/deployments" element={<Deploy />} />
               <Route path="/models" element={<Models />} />
             </Routes>
-          </div>
+          </main>
+          <footer className="p-4 text-right text-xs text-gray-500">
+            &copy; {new Date().getFullYear()} ShadmanSakib22. All rights
+            reserved.
+          </footer>
         </SidebarInset>
       </SidebarProvider>
     </BrowserRouter>
