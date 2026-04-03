@@ -69,7 +69,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between gap-6 border-b border-border/50 bg-background px-4">
       <div className="flex items-center gap-4">
-        {!open && <Logo />}
+        {!open || isMobile ? <Logo /> : null}
 
         <Button
           className="hidden lg:inline-flex items-center gap-2"
