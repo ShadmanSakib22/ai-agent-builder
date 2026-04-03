@@ -19,7 +19,6 @@ interface DraggableItemProps {
 
 export function DraggableItem({
   id,
-  type,
   title,
   description,
   isSelected,
