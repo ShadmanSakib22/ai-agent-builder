@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { BuilderNav } from "@/components/builder-nav";
@@ -57,6 +58,7 @@ function App() {
           </footer>
         </SidebarInset>
       </SidebarProvider>
+      <Analytics />
     </BrowserRouter>
   );
 }
