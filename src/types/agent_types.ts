@@ -1,27 +1,9 @@
-export interface AgentProfile {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface Skill {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-}
-
-export interface Layer {
-  id: string;
-  name: string;
-  type: string;
-  description: string;
-}
+export type { AgentProfile, Skill, Layer, AgentBlueprint, ChatMessage } from "@/lib/api";
 
 export interface AgentData {
-  agentProfiles: AgentProfile[];
-  skills: Skill[];
-  layers: Layer[];
+  agentProfiles: import("@/lib/api").AgentProfile[];
+  skills: import("@/lib/api").Skill[];
+  layers: import("@/lib/api").Layer[];
 }
 
 export interface SavedAgent {

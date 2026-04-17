@@ -23,9 +23,12 @@ import {
   SendIcon,
   TerminalIcon,
   Rocket,
+  SettingsIcon,
+  MessageSquareIcon,
 } from "lucide-react";
 import { useAgentStore } from "@/stores/agentStore";
 import type { SavedAgent } from "@/types/agent_types";
+import type { AgentItem } from "@/components/nav-agents";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const {
@@ -81,6 +84,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const navSecondary = [
     {
+      title: "Chat",
+      url: "/chat",
+      icon: <MessageSquareIcon />,
+    },
+    {
+      title: "Settings",
+      url: "/settings",
+      icon: <SettingsIcon />,
+    },
+    {
       title: "Support",
       url: "mailto:shadman.sakib.office11@gmail.com",
       icon: <LifeBuoyIcon />,
@@ -103,10 +116,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       originalIndex: savedAgents.length - 1 - i,
     }));
 
-  const handleAgentClick = (item: { agent?: unknown }) => {
+  const handleAgentClick = (item: AgentItem) => {
     if (item.agent) {
       loadAgent(item.agent as SavedAgent);
       navigate("/builder");
+    }
+  };
+
+  const handleChatClick = (item: AgentItem) => {
+    if (item.agent) {
+      loadAgent(item.agent as SavedAgent);
+      navigate("/chat");
     }
   };
 
@@ -131,6 +151,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavAgents
           myAgents={recentAgents}
           onAgentClick={handleAgentClick}
+          onChatClick={handleChatClick}
           onMoreClick={() => navigate("/models")}
         />
         <NavSecondary items={navSecondary} className="mt-auto" />

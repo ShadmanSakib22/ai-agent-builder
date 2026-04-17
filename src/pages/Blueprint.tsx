@@ -1,6 +1,10 @@
+import { useState, useEffect } from "react";
 import { useAgentStore } from "@/stores/agentStore";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { previewSystemPrompt } from "@/lib/api";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "sonner";
 import {
   Zap,
   Brain,
@@ -10,6 +14,10 @@ import {
   Layers,
   Rocket,
   ArrowRight,
+  Copy,
+  Check,
+  Loader2,
+  FileText,
 } from "lucide-react";
 
 type Category =
@@ -107,8 +115,53 @@ export default function Blueprint() {
     selectedSkills,
     selectedLayers,
     selectedProvider,
+    agentName,
   } = useAgentStore();
   const navigate = useNavigate();
+
+  const [systemPrompt, setSystemPrompt] = useState<string>("");
+  const [tokenEstimate, setTokenEstimate] = useState<number>(0);
+  const [isLoadingPrompt, setIsLoadingPrompt] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false);
+
+  useEffect(() => {
+    const fetchPrompt = async () => {
+      if (!selectedProfile && selectedSkills.length === 0 && selectedLayers.length === 0) {
+        setSystemPrompt("");
+        setTokenEstimate(0);
+        return;
+      }
+
+      setIsLoadingPrompt(true);
+      try {
+        const blueprint = {
+          profile: profile ? { id: profile.id, name: profile.name, description: profile.description } : undefined,
+          skills: skills.map((s) => ({ id: s.id, name: s.name, category: s.category, description: s.description })),
+          layers: layers.map((l) => ({ id: l.id, name: l.name, type: l.type, description: l.description })),
+          provider: selectedProvider,
+          agent_name: agentName || "Unnamed Agent",
+        };
+        const result = await previewSystemPrompt(blueprint);
+        setSystemPrompt(result.system_prompt);
+        setTokenEstimate(result.token_estimate);
+      } catch {
+        setSystemPrompt("");
+        setTokenEstimate(0);
+      } finally {
+        setIsLoadingPrompt(false);
+      }
+    };
+
+    fetchPrompt();
+  }, [selectedProfile, selectedSkills, selectedLayers, selectedProvider, agentName, data]);
+
+  const handleCopyPrompt = () => {
+    navigator.clipboard.writeText(systemPrompt);
+    setCopied(true);
+    toast.success("System prompt copied to clipboard!");
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   if (loading) {
     return (
@@ -255,6 +308,60 @@ export default function Blueprint() {
           </div>
         )}
       </div>
+
+      {/* System Prompt Preview */}
+      {!isEmpty && (
+        <div className="rounded-xl border border-border/60 bg-card">
+          <div className="flex items-center justify-between border-b border-border/40 px-5 py-3.5">
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-semibold">System Prompt Preview</h2>
+              {isLoadingPrompt ? (
+                <Loader2 className="size-4 animate-spin text-muted-foreground" />
+              ) : (
+                <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
+                  ~{tokenEstimate} tokens
+                </span>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPrompt(!showPrompt)}
+              >
+                <FileText className="size-4" />
+                {showPrompt ? "Hide" : "Show"}
+              </Button>
+              {systemPrompt && (
+                <Button variant="outline" size="sm" onClick={handleCopyPrompt}>
+                  {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+                  {copied ? "Copied!" : "Copy"}
+                </Button>
+              )}
+            </div>
+          </div>
+          {showPrompt && (
+            <div className="p-5">
+              {isLoadingPrompt ? (
+                <div className="flex items-center justify-center py-8 text-muted-foreground">
+                  <Loader2 className="size-5 animate-spin" />
+                  <span className="ml-2 text-sm">Generating prompt...</span>
+                </div>
+              ) : systemPrompt ? (
+                <ScrollArea className="h-64 rounded-lg border border-border/50 bg-muted/30 p-4">
+                  <pre className="whitespace-pre-wrap text-sm font-mono leading-relaxed">
+                    {systemPrompt}
+                  </pre>
+                </ScrollArea>
+              ) : (
+                <p className="py-4 text-center text-sm text-muted-foreground">
+                  Add profile, skills, or layers to generate a system prompt.
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* All skills reference */}
       <div className="rounded-xl border border-border/60 bg-card pb-4">

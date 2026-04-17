@@ -8,6 +8,7 @@ import {
   FolderOpen,
   Plus,
   Clock,
+  MessageSquare,
 } from "lucide-react";
 
 export default function Models() {
@@ -156,12 +157,21 @@ export default function Models() {
                 <button
                   onClick={() => {
                     loadAgent(agent);
-                    navigate("/builder");
+                    navigate("/chat");
                   }}
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border bg-muted/50 py-1.5 text-xs font-medium transition-all hover:bg-muted"
                 >
+                  <MessageSquare className="size-3.5" />
+                  Chat
+                </button>
+                <button
+                  onClick={() => {
+                    loadAgent(agent);
+                    navigate("/builder");
+                  }}
+                  className="flex items-center justify-center gap-1.5 rounded-lg border border-border bg-muted/50 py-1.5 px-3 text-xs font-medium transition-all hover:bg-muted"
+                >
                   <FolderOpen className="size-3.5" />
-                  Load
                 </button>
                 <button
                   onClick={() => deleteAgent(realIndex)}

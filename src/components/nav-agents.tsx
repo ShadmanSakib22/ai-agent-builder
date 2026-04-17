@@ -4,7 +4,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -16,24 +15,28 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { MoreHorizontalIcon, FolderIcon, Trash2Icon } from "lucide-react";
+import { MoreHorizontalIcon, MessageSquareIcon } from "lucide-react";
 
-interface AgentItem {
+export interface AgentItem {
   name: string;
   url: string;
   icon: React.ReactNode;
   agent?: unknown;
 }
 
+interface NavAgentsProps {
+  myAgents: AgentItem[];
+  onAgentClick?: (item: AgentItem) => void;
+  onChatClick?: (item: AgentItem) => void;
+  onMoreClick?: () => void;
+}
+
 export function NavAgents({
   myAgents,
   onAgentClick,
+  onChatClick,
   onMoreClick,
-}: {
-  myAgents: AgentItem[];
-  onAgentClick?: (item: AgentItem) => void;
-  onMoreClick?: () => void;
-}) {
+}: NavAgentsProps) {
   const { isMobile } = useSidebar();
 
   return (
@@ -50,10 +53,10 @@ export function NavAgents({
           myAgents.map((item) => (
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton
-                asChild={!onAgentClick}
-                onClick={onAgentClick ? () => onAgentClick(item) : undefined}
+                asChild={!onChatClick}
+                onClick={onChatClick ? () => onChatClick(item) : undefined}
               >
-                {onAgentClick ? (
+                {onChatClick ? (
                   <button className="flex w-full items-center gap-2">
                     {item.icon}
                     <span>{item.name}</span>
@@ -82,16 +85,18 @@ export function NavAgents({
                 >
                   <DropdownMenuItem
                     onClick={
+                      onChatClick ? () => onChatClick(item) : undefined
+                    }
+                  >
+                    <MessageSquareIcon className="text-muted-foreground" />
+                    <span>Chat</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={
                       onAgentClick ? () => onAgentClick(item) : undefined
                     }
                   >
-                    <FolderIcon className="text-muted-foreground" />
                     <span>Load Agent</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-destructive focus:text-destructive">
-                    <Trash2Icon className="text-destructive" />
-                    <span>Delete Agent</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

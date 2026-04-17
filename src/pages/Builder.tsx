@@ -10,7 +10,7 @@ interface BuilderProps {
   section?: "profiles" | "skills" | "layers" | "providers";
 }
 
-const PROVIDERS = ["Gemini", "ChatGPT", "Kimi", "Claude", "DeepSeek"];
+const PROVIDERS = ["Gemini", "ChatGPT", "Kimi", "Claude", "DeepSeek", "OpenRouter", "Local LLM"];
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   information: <Zap className="size-3.5" />,

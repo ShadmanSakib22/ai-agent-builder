@@ -12,6 +12,8 @@ import Builder from "@/pages/Builder";
 import Blueprint from "@/pages/Blueprint";
 import Deploy from "@/pages/Deploy";
 import Models from "@/pages/Models";
+import Chat from "@/pages/Chat";
+import Settings from "@/pages/Settings";
 
 function App() {
   const fetchData = useAgentStore((state) => state.fetchData);
@@ -50,6 +52,8 @@ function App() {
               <Route path="/builder/blueprint" element={<Blueprint />} />
               <Route path="/builder/deployments" element={<Deploy />} />
               <Route path="/models" element={<Models />} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </main>
           <footer className="p-4 text-right text-xs text-gray-500">

@@ -1,202 +1,170 @@
 {
     "agentProfiles": [
         {
-            "id": "profile_1",
-            "name": "Customer Support",
-            "description": "A helpful agent designed to answer user queries and resolve issues."
+            "id": "profile_customer_support",
+            "name": "Customer Support Agent",
+            "description": "A helpful and empathetic agent designed to answer customer queries, resolve issues, and provide product information with patience and professionalism."
         },
         {
-            "id": "profile_2",
+            "id": "profile_research_assistant",
+            "name": "Research Assistant",
+            "description": "An agent specialized in finding, analyzing, and summarizing information from various sources. Perfect for academic and professional research tasks."
+        },
+        {
+            "id": "profile_code_assistant",
             "name": "Code Assistant",
-            "description": "An agent specialized in writing, reviewing, and debugging code."
+            "description": "An expert coding partner that writes, reviews, and debugs code across multiple programming languages with a focus on best practices."
         },
         {
-            "id": "profile_3",
+            "id": "profile_content_creator",
+            "name": "Content Creator",
+            "description": "A versatile writing assistant that generates engaging content, from blog posts and social media to marketing copy and creative stories."
+        },
+        {
+            "id": "profile_data_analyst",
             "name": "Data Analyst",
-            "description": "An agent that can fetch, parse, and visualize data sets."
+            "description": "An analytical agent that interprets data, identifies patterns, and provides actionable insights with clear visualizations and explanations."
         },
         {
-            "id": "profile_4",
-            "name": "Creative Writer",
-            "description": "An agent specializing in generating creative content, stories, and copy."
-        },
-        {
-            "id": "profile_5",
-            "name": "Sales Representative",
-            "description": "A persuasive agent trained to handle sales inquiries and negotiations."
-        },
-        {
-            "id": "profile_6",
-            "name": "Financial Advisor",
-            "description": "An agent that provides financial insights and investment analysis."
-        },
-        {
-            "id": "profile_7",
-            "name": "HR Assistant",
-            "description": "Helps with recruitment, onboarding, and answering employee policy questions."
-        },
-        {
-            "id": "profile_8",
-            "name": "DevOps Engineer",
-            "description": "Specialized in CI/CD pipelines, infrastructure automation, and deployments."
-        },
-        {
-            "id": "profile_9",
-            "name": "Legal Consultant",
-            "description": "Provides guidance on legal documents, terms of service, and contract reviews."
-        },
-        {
-            "id": "profile_10",
-            "name": "UI/UX Designer",
-            "description": "An agent that reviews user interfaces and suggests design improvements."
+            "id": "profile_sales_agent",
+            "name": "Sales Agent",
+            "description": "A persuasive and knowledgeable agent trained to handle sales inquiries, demonstrate product value, and guide customers through purchasing decisions."
         }
     ],
     "skills": [
         {
-            "id": "sk_search",
+            "id": "sk_web_search",
             "name": "Web Search",
             "category": "information",
-            "description": "Ability to search the live internet for up-to-date information."
+            "description": "Search the live internet for up-to-date information, news, prices, and factual data."
         },
         {
-            "id": "sk_code",
-            "name": "Code Execution",
-            "category": "action",
-            "description": "Run Python or JavaScript code in a secure sandbox."
-        },
-        {
-            "id": "sk_db",
-            "name": "Database Query",
-            "category": "information",
-            "description": "Execute SQL queries against connected databases."
-        },
-        {
-            "id": "sk_email",
-            "name": "Send Email",
-            "category": "action",
-            "description": "Draft and send emails on behalf of the user."
-        },
-        {
-            "id": "sk_calendar",
-            "name": "Manage Calendar",
-            "category": "action",
-            "description": "View, create, and modify calendar events."
-        },
-        {
-            "id": "sk_pdf_parse",
-            "name": "PDF Parsing",
-            "category": "information",
-            "description": "Extract text, tables, and images from PDF documents."
-        },
-        {
-            "id": "sk_image_gen",
-            "name": "Image Generation",
-            "category": "action",
-            "description": "Create novel images based on text descriptions."
-        },
-        {
-            "id": "sk_data_analysis",
-            "name": "Data Analysis",
-            "category": "information",
-            "description": "Perform statistical analysis and generate insights from raw data."
-        },
-        {
-            "id": "sk_translate",
-            "name": "Language Translation",
-            "category": "action",
-            "description": "Translate text seamlessly between multiple languages."
-        },
-        {
-            "id": "sk_web_scrape",
+            "id": "sk_web_scraping",
             "name": "Web Scraping",
             "category": "information",
-            "description": "Extract structured data from web pages automatically."
+            "description": "Extract structured data from websites, including prices, product details, and contact information."
         },
         {
-            "id": "sk_git",
-            "name": "Git Operations",
+            "id": "sk_language_translation",
+            "name": "Language Translation",
             "category": "action",
-            "description": "Commit, push, branch, and manage code repositories."
+            "description": "Translate text accurately between major languages while preserving context and nuance."
         },
         {
-            "id": "sk_social",
-            "name": "Social Media Posting",
+            "id": "sk_summarization",
+            "name": "Summarization",
+            "category": "information",
+            "description": "Condense long documents, articles, or conversations into concise, key-point summaries."
+        },
+        {
+            "id": "sk_sentiment_analysis",
+            "name": "Sentiment Analysis",
+            "category": "information",
+            "description": "Analyze text to determine emotional tone, opinions, and attitudes expressed."
+        },
+        {
+            "id": "sk_code_generation",
+            "name": "Code Generation",
             "category": "action",
-            "description": "Schedule and post updates to social media platforms."
+            "description": "Write clean, efficient code in Python, JavaScript, TypeScript, and other popular languages."
+        },
+        {
+            "id": "sk_code_review",
+            "name": "Code Review",
+            "category": "information",
+            "description": "Analyze code for bugs, security issues, and opportunities for optimization."
+        },
+        {
+            "id": "sk_email_composition",
+            "name": "Email Composition",
+            "category": "action",
+            "description": "Draft professional emails for various purposes including outreach, support, and follow-ups."
+        },
+        {
+            "id": "sk_product_description",
+            "name": "Product Descriptions",
+            "category": "action",
+            "description": "Write compelling product descriptions that highlight features and benefits effectively."
+        },
+        {
+            "id": "sk_faq_generation",
+            "name": "FAQ Generation",
+            "category": "action",
+            "description": "Create comprehensive FAQ documents based on product information or common questions."
+        },
+        {
+            "id": "sk_comparison",
+            "name": "Product Comparison",
+            "category": "information",
+            "description": "Compare products, services, or options based on features, pricing, and pros/cons."
+        },
+        {
+            "id": "sk_step_by_step",
+            "name": "Step-by-Step Guides",
+            "category": "action",
+            "description": "Create detailed how-to guides and tutorials with clear, numbered steps."
         }
     ],
     "layers": [
         {
-            "id": "ly_cot",
-            "name": "Chain of Thought",
-            "type": "reasoning",
-            "description": "Forces the agent to articulate its reasoning step-by-step before answering."
-        },
-        {
-            "id": "ly_reflexion",
-            "name": "Reflexion",
-            "type": "reasoning",
-            "description": "Allows the agent to self-correct and try again if it detects an error in its output."
-        },
-        {
-            "id": "ly_sarcasm",
-            "name": "Sarcastic Tone",
-            "type": "personality",
-            "description": "The agent will adopt a deeply sarcastic and cynical persona."
-        },
-        {
-            "id": "ly_pirate",
-            "name": "Pirate Persona",
-            "type": "personality",
-            "description": "Arr! The agent speaks like a swashbuckling pirate."
-        },
-        {
-            "id": "ly_memory",
-            "name": "Long-term Memory",
-            "type": "context",
-            "description": "Agent can remember facts across multiple discrete sessions."
-        },
-        {
-            "id": "ly_empathetic",
-            "name": "Empathetic Tone",
-            "type": "personality",
-            "description": "Agent adopts a caring and emotionally supportive tone."
+            "id": "ly_concise",
+            "name": "Concise Mode",
+            "type": "formatting",
+            "description": "Keep responses brief and to the point. Avoid unnecessary words, greetings, and conversational filler. Deliver information efficiently."
         },
         {
             "id": "ly_fact_checker",
             "name": "Fact Checker",
             "type": "reasoning",
-            "description": "Automatically verifies claims against trusted sources before outputting."
+            "description": "Verify all factual claims before stating them. Clearly distinguish between verified facts and opinions. Cite sources when possible."
         },
         {
-            "id": "ly_concise",
-            "name": "Concise Mode",
-            "type": "formatting",
-            "description": "Forces the agent to be as brief as possible, avoiding conversational filler."
-        },
-        {
-            "id": "ly_multi_agent",
-            "name": "Multi-Agent Collaboration",
-            "type": "context",
-            "description": "Simulates multiple experts discussing a topic to reach a consensus."
-        },
-        {
-            "id": "ly_code_optimizer",
-            "name": "Code Optimizer",
+            "id": "ly_step_by_step",
+            "name": "Step-by-Step Thinking",
             "type": "reasoning",
-            "description": "Focuses strictly on performance and best practices when analyzing code."
+            "description": "Break down complex problems into clear, numbered steps. Show reasoning before giving final answers."
         },
         {
-            "id": "ly_shakespeare",
-            "name": "Shakespearean Persona",
+            "id": "ly_pirate",
+            "name": "Pirate Persona",
             "type": "personality",
-            "description": "The agent speaks in Elizabethan English, similar to William Shakespeare."
+            "description": "Speak like a friendly swashbuckling pirate. Use nautical phrases like 'Arr!', 'Ahoy!', and 'Shiver me timbers!' in a fun, engaging way."
+        },
+        {
+            "id": "ly_professional",
+            "name": "Professional Tone",
+            "type": "personality",
+            "description": "Maintain a formal, business-appropriate tone. Use professional language suitable for workplace communication."
+        },
+        {
+            "id": "ly_friendly",
+            "name": "Friendly & Warm",
+            "type": "personality",
+            "description": "Be cheerful, approachable, and encouraging. Use friendly expressions and show genuine interest in helping."
+        },
+        {
+            "id": "ly_technical",
+            "name": "Technical Expert",
+            "type": "reasoning",
+            "description": "Use precise technical terminology. Include relevant jargon, code snippets, and technical details when appropriate."
         },
         {
             "id": "ly_markdown",
             "name": "Markdown Enforcer",
             "type": "formatting",
-            "description": "Forces all output to be beautifully formatted with Markdown, including tables and code blocks."
+            "description": "Format all responses with proper Markdown: headers, bold, lists, code blocks, and tables where applicable."
+        },
+        {
+            "id": "ly_empathetic",
+            "name": "Empathetic Listener",
+            "type": "personality",
+            "description": "Acknowledge user emotions and concerns. Be patient, understanding, and supportive in responses."
+        },
+        {
+            "id": "ly_humor",
+            "name": "Light Humor",
+            "type": "personality",
+            "description": "Add appropriate, light humor to make interactions more enjoyable. Keep it tasteful and relevant."
         }
     ]
 }
