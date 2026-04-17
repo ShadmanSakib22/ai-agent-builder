@@ -19,7 +19,8 @@ export function BuilderNav() {
   const currentStep = STEPS.find((s) => s.path === pathname);
 
   const getPageTitle = () => {
-    if (pathname === "/" || pathname === "") return "Frontend Project";
+    if (pathname === "/" || pathname === "")
+      return "Current Version: Prototype v1.0";
     if (pathname === "/builder") return "Builder";
     if (pathname === "/models") return "All Models";
     return currentStep?.label ?? "Builder";
