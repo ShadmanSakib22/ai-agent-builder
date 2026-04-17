@@ -20,7 +20,6 @@ import {
   TerminalSquareIcon,
   BotIcon,
   LifeBuoyIcon,
-  SendIcon,
   TerminalIcon,
   Rocket,
   SettingsIcon,
@@ -97,11 +96,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: "Support",
       url: "mailto:shadman.sakib.office11@gmail.com",
       icon: <LifeBuoyIcon />,
-    },
-    {
-      title: "Feedback",
-      url: "mailto:shadman.sakib.office11@gmail.com",
-      icon: <SendIcon />,
     },
   ];
 

@@ -58,7 +58,7 @@ export default function Models() {
             resetAgent();
             navigate("/builder/base-profiles");
           }}
-          className="flex items-center gap-2 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
+          className="lg:hidden flex items-center gap-2 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
         >
           <Plus className="size-4" />
           New Agent

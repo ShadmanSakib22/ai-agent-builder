@@ -19,7 +19,12 @@ export function BuilderNav() {
   const currentStep = STEPS.find((s) => s.path === pathname);
 
   const getPageTitle = () => {
-    if (pathname === "/" || pathname === "")
+    if (
+      pathname === "/" ||
+      pathname === "" ||
+      pathname === "/chat" ||
+      pathname === "/settings"
+    )
       return "Current Version: Prototype v1.0";
     if (pathname === "/builder") return "Builder";
     if (pathname === "/models") return "All Models";

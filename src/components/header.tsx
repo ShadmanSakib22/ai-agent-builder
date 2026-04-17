@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
-  User,
   PanelLeft,
   LayersPlus,
   SunMoon,
@@ -9,6 +8,7 @@ import {
   Wifi,
   WifiOff,
   type LucideIcon,
+  Settings,
 } from "lucide-react";
 
 import Dock from "@/components/ui/dock";
@@ -68,14 +68,10 @@ export function Header() {
       onClick: handleNewAgent,
     },
     {
-      icon: User,
-      label: "Profile",
+      icon: Settings,
+      label: "Settings",
       onClick: () => {
-        window.open(
-          "https://shadman-portfolio-2024.vercel.app",
-          "_blank",
-          "noopener,noreferrer",
-        );
+        navigate("/settings");
       },
     },
     {

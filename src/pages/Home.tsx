@@ -5,8 +5,10 @@ import {
   AlertCircle,
   Terminal,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <div className="container mx-auto max-w-5xl px-6 py-12 space-y-16">
       {/* Hero Section */}
@@ -19,12 +21,12 @@ const Home = () => {
           blueprints locally in your browser before deploying to production.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <a
-            href="/builder"
+          <button
+            onClick={() => navigate("/builder")}
             className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-md font-semibold flex items-center gap-2 transition-all shadow-lg shadow-primary/20"
           >
             Get Started <Rocket size={18} />
-          </a>
+          </button>
           <a
             href="https://github.com/ShadmanSakib22/ai-agent-builder"
             className="border border-input bg-background hover:bg-accent hover:text-accent-foreground px-8 py-3 rounded-md font-medium transition-all"
